@@ -1,11 +1,9 @@
-name: Lint API
+name: Lint
 
 on:
   push:
     branches:
       - main
-    paths:
-      - 'apps/api/**'
   pull_request:
     branches:
       - main
@@ -31,17 +29,12 @@ jobs:
         with:
           node-version: 20
 
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
+      - name: Run install
+        uses: borales/actions-yarn@v4
         with:
-          version: 8
-          run_install: false
+          cmd: install
 
-      - name: Go to apps/api
-        run: cd apps/api
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Run linters
-        run: 'pnpm run lint && pnpm run format'
+      - name: Run lint
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: lint

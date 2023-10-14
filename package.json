@@ -15,6 +15,7 @@
     "web:prod": "yarn workspace next-app build",
     "web:prod:serve": "yarn workspace next-app serve",
     "fix": "manypkg fix",
+    "lint": "yarn workspaces foreach -pi run lint",
     "postinstall": "yarn check-deps && yarn build",
     "build": "yarn workspaces foreach --exclude next-app run build",
     "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest react-native-web-lite@latest",
