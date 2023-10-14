@@ -91,6 +91,7 @@ jobs:
     env:
       CAPROVER_URL: ${{ secrets.CAPROVER_URL }}
       CAPROVER_APP_TOKEN: ${{ secrets.CAPROVER_APP_TOKEN }}
+      CAPROVER_APP_NAME: ${{ secrets.CAPROVER_APP_NAME }}
     strategy:
       matrix:
         include:
@@ -102,6 +103,6 @@ jobs:
         uses: caprover/deploy-from-github@main
         with:
           server: '${{ env.CAPROVER_URL }}'
-          app: '${{ matrix.app }}'
+          app: '${{ env.CAPROVER_APP_NAME }}'
           token: '${{ env.CAPROVER_APP_TOKEN }}'
           image: '${{ matrix.image }}' # optional
