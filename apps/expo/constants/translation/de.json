@@ -1,0 +1,218 @@
+{
+  "translation": {
+    "auth": {
+      "login": {
+        "screenTitle": "Login",
+        "title": "Direkt einloggen",
+        "subHeadline": "Willkommen",
+        "loginButton": "Login",
+        "forgotPassword": "Passwort vergessen?",
+        "email": "E-Mail",
+        "register": "Du hast noch keinen Account? Registrieren",
+        "password": "Passwort",
+        "apple": "Mit Apple anmelden",
+        "google": "Mit Google anmelden",
+        "github": "Mit Github anmelden",
+        "errors": {
+          "email": {
+            "required": "E-Mail ist ein Pflichtfeld",
+            "invalid": "Ungültige E-Mail Adresse"
+          },
+          "password": {
+            "required": "Passwort ist ein Pflichtfeld",
+            "invalid": "Falsches Passwort"
+          },
+          "unknown": "Es ist ein Fehler aufgetreten"
+        }
+      },
+      "signUp": {
+        "screenTitle": "Registrieren",
+        "title": "Account erstellen",
+        "subHeadline": "Es ist kostenfrei",
+        "username": "Nutzername",
+        "email": "E-Mail",
+        "signUpButton": "Registrieren",
+        "password": "Passwort",
+        "firstName": "Vorname",
+        "login": "Du hast bereits Account? Zum Login",
+        "lastName": "Nachname",
+        "passwordConfirm": "Passwort bestätigen",
+        "privacyPolicy": [
+          "Ich habe die",
+          "Dateschutzerklärung",
+          "und",
+          "Nutzungsbedingungen",
+          "der Firma gelesen und akzeptiere diese."
+        ],
+        "errors": {
+          "email": {
+            "required": "E-Mail ist ein Pflichtfeld",
+            "invalid": "Ungültige E-Mail Adresse",
+            "alreadyexists": "Ein Konto mit dieser E-Mail existiert bereits"
+          },
+          "username": { "required": "Nutzername ist ein Pflichtfeld" },
+          "company": { "required": "Firma ist ein Pflichtfeld" },
+          "password": {
+            "required": "Passwort ist ein Pflichtfeld",
+            "invalid": "Passwort muss aus mindestens 8 Zeichen bestehen. Dieses muss Klein- und Großbuchstaben sowie eine Ziffer und Sonderzeichen enthalten."
+          },
+          "passwordConfirm": { "invalid": "Passwörter müssen übereinstimmen." },
+          "firstName": { "required": "Vorname ist ein Pflichtfeld" },
+          "lastName": { "required": "Nachname ist ein Pflichtfeld" },
+          "privacyPolicy": { "required": "Datenschutz ist ein Pflichtfeld" },
+          "unkownError": "Es ist ein Fehler aufgetreten."
+        }
+      },
+      "signUpConfirm": {
+        "screenTitle": "E-Mail verifizieren",
+        "title": "E-Mail bestätigen",
+        "description": "Wir haben eine E-Mail an {{mail}} gesendet. Bitte bestätigen Sie Ihr Konto mit Hilfe des Links.",
+        "back": "Zurück zum Login"
+      },
+      "resetPassword": {
+        "screenTitle": "Passwort zurücksetzen",
+        "title": "Passwort zurücksetzen",
+        "subHeadline": "Du kannst dich nicht anmelden?",
+        "description": "Gib deine mit dem Account verknüpfte E-Mail-Adresse ein, damit wir mit der Zurücksetzung beginnen können.",
+        "email": "E-Mail",
+        "sendEmail": "E-Mail senden",
+        "back": "Zurück zum Login",
+        "errors": {
+          "email": {
+            "nouserfound": "Es konnte kein Nutzer mit dieser E-Mail gefunden werden."
+          }
+        }
+      },
+      "resetPasswordSent": {
+        "screenTitle": "E-Mail gesendet",
+        "title": "E-Mail gesendet",
+        "description": "Der Verifizierungslink für das Zurücksetzen des Passworts wurde versendet.",
+        "back": "Zurück zum Login"
+      }
+    },
+    "home": {
+      "screenTitle": "Home"
+    },
+    "account": {
+      "screenTitle": "Profil",
+      "general": {
+        "user": {
+          "title": "Profildaten ändern",
+          "description": "Hier kannst du deine Profildaten ändern"
+        },
+        "email": {
+          "title": "E-Mail ändern",
+          "description": "Hier kannst du deine E-Mail ändern",
+          "thirdpartyinfo": {
+            "title": "E-Mail kann nicht geändert werden",
+            "description": "Du hast dich mit einem Drittanbieter angemeldet. Bitte ändere deine E-Mail direkt bei dem Anbieter."
+          }
+        },
+        "password": {
+          "title": "Passwort ändern",
+          "description": "Hier kannst du dein Passwort ändern",
+          "thirdpartyinfo": {
+            "title": "Passwort kann nicht geändert werden",
+            "description": "Du hast dich mit einem Drittanbieter angemeldet. Bitte ändere dein Passwort direkt bei dem Anbieter."
+          }
+        },
+        "settings": {
+          "title": "Einstellungen",
+          "description": "Hier kannst du deine App Einstellungen ändern"
+        }
+      },
+      "logout": "Abmelden",
+      "legal": {
+        "title": "Rechtliche Angaben",
+        "privacypolicy": {
+          "title": "Datenschutz"
+        },
+        "termsandconditions": {
+          "title": "Nutzungsbedingungen"
+        },
+        "imprint": {
+          "title": "Impressum"
+        }
+      },
+      "changepassword": {
+        "screenTitle": "Passwort aktualisieren",
+        "title": "Passwort aktualisieren",
+        "subHeadline": "Geben Sie Ihr neues Passwort ein.",
+        "password": "Neues Passwort",
+        "passwordConfirm": "Passwort bestätigen",
+        "oldPassword": "Altes Passwort",
+        "submit": "Passwort ändern",
+        "errors": {
+          "password": {
+            "required": "Passwort ist ein Pflichtfeld",
+            "notequals": "Passwörter stimmen nicht überein",
+            "passwordStrength": "Passwort muss aus mindestens 8 Zeichen bestehen und Zahlen enthalten."
+          },
+          "oldpassword": {
+            "required": "Altes Password ist ein Pflichtfeld",
+            "invalid": "Es ist ein Fehler aufgetreten. Altes Passwort ist falsch."
+          },
+          "unkownError": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es zu einem späteren Zeitpunkt erneut."
+        },
+        "success": "Passwort erfolgreich geändert"
+      },
+      "changeemail": {
+        "screenTitle": "E-Mail aktualisieren",
+        "title": "E-Mail aktualisieren",
+        "subHeadline": "Geben Sie Ihre neue E-Mail ein.",
+        "email": "Neue E-Mail",
+        "submit": "E-Mail ändern",
+        "errors": {
+          "email": {
+            "required": "E-Mail ist ein Pflichtfeld",
+            "alreadyexists": "Ein Konto mit dieser E-Mail existiert bereits"
+          },
+          "unkownError": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es zu einem späteren Zeitpunkt erneut."
+        },
+        "success": "Ein Bestätigungslink wurde an die neue E-Mail gesendet."
+      },
+      "edituser": {
+        "screenTitle": "Account bearbeiten",
+        "title": "Account bearbeiten",
+        "subHeadline": "Ändern Sie Ihre Profildaten",
+        "mail": "E-Mail",
+        "firstname": "Vorname",
+        "lastname": "Nachname",
+        "avatarurl": "Profilbild:",
+        "uploadavatarurl": "Profilbild auswählen",
+        "submit": "Speichern",
+        "success": "Account erfolgreich gespeichert",
+        "errors": {
+          "firstname": {
+            "required": "Vorname ist ein Pflichtfeld"
+          },
+          "lastname": {
+            "required": "Nachname ist ein Pflichtfeld"
+          },
+          "unknown": "Es ist ein Fehler aufgetreten"
+        }
+      },
+      "deleteaccount": {
+        "screenTitle": "Account löschen verifizieren",
+        "title": "Account löschen",
+        "description": "Um Ihren Account zu löschen, geben Sie bitte als Bestätigung Ihre E-Mail ein. Das Löschen des Accounts kann nicht rückgängig gemacht werden und alle Daten werden gelöscht.",
+        "submit": "Account für immer löschen",
+        "cancel": "Abbrechen",
+        "email": "E-Mail",
+        "success": "Bestätigungslink zum Löschen des Accounts wurde an die E-Mail gesendet",
+        "errors": {
+          "email": {
+            "required": "E-Mail ist ein Pflichtfeld",
+            "notmatch": "E-Mail stimmt nicht überein"
+          },
+          "unknown": "Es ist ein Fehler aufgetreten"
+        }
+      }
+    },
+    "notFound": {
+      "screenTitle": "Seite nicht gefunden",
+      "description": "Die Seite konnte nicht gefunden werden.",
+      "back": "Zurück zum Start"
+    }
+  }
+}

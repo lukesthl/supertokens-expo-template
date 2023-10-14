@@ -1,0 +1,230 @@
+{
+  "translation": {
+    "auth": {
+      "login": {
+        "screenTitle": "Login",
+        "title": "Signin",
+        "subHeadline": "Welcome",
+        "loginButton": "Login",
+        "forgotPassword": "Forgot password?",
+        "email": "Email",
+        "register": "Don't have an account? Register",
+        "password": "Password",
+        "apple": "Signin with Apple",
+        "google": "Signin with Google",
+        "github": "Signin with Github",
+        "errors": {
+          "email": {
+            "required": "Email is a required field",
+            "invalid": "Invalid email address"
+          },
+          "password": {
+            "required": "Password is a required field",
+            "invalid": "Incorrect password"
+          },
+          "unknown": "An error occurred"
+        }
+      },
+      "signUp": {
+        "screenTitle": "Register",
+        "title": "Create an Account",
+        "subHeadline": "Create an account to continue",
+        "username": "Username",
+        "email": "Email",
+        "signUpButton": "Register",
+        "password": "Password",
+        "firstName": "First Name",
+        "login": "Already have an account? Go to Login",
+        "lastName": "Last Name",
+        "passwordConfirm": "Confirm Password",
+        "privacyPolicy": [
+          "I have read the",
+          "Privacy Policy",
+          "and",
+          "Terms of Use",
+          "of the company and accept them."
+        ],
+        "errors": {
+          "email": {
+            "required": "Email is a required field",
+            "invalid": "Invalid email address",
+            "alreadyExists": "An account with this email already exists"
+          },
+          "username": {
+            "required": "Username is a required field"
+          },
+          "company": {
+            "required": "Company is a required field"
+          },
+          "password": {
+            "required": "Password is a required field",
+            "invalid": "Password must be at least 8 characters long, containing lowercase and uppercase letters, a digit, and special characters."
+          },
+          "passwordConfirm": {
+            "invalid": "Passwords must match"
+          },
+          "firstName": {
+            "required": "First Name is a required field"
+          },
+          "lastName": {
+            "required": "Last Name is a required field"
+          },
+          "privacyPolicy": {
+            "required": "Privacy Policy is a required field"
+          },
+          "unknownError": "An error occurred"
+        }
+      },
+      "signUpConfirm": {
+        "screenTitle": "Verify Email",
+        "title": "Confirm Email",
+        "description": "We have sent an email to {{mail}}. Please confirm your account using the link provided.",
+        "back": "Back to Login"
+      },
+      "resetPassword": {
+        "screenTitle": "Reset Password",
+        "title": "Reset Password",
+        "subHeadline": "Can't sign in?",
+        "description": "Enter the email associated with your account to begin the reset process.",
+        "email": "Email",
+        "sendEmail": "Send Email",
+        "back": "Back to Login",
+        "errors": {
+          "email": {
+            "nouserfound": "No user found with this email"
+          }
+        }
+      },
+      "resetPasswordSent": {
+        "screenTitle": "Email Sent",
+        "title": "Email Sent",
+        "description": "The verification link for password reset has been sent.",
+        "back": "Back to Login"
+      }
+    },
+    "home": {
+      "screenTitle": "Home"
+    },
+    "account": {
+      "screenTitle": "Profile",
+      "general": {
+        "user": {
+          "title": "Change Profile Data",
+          "description": "Change your profile data"
+        },
+        "email": {
+          "title": "Change Email",
+          "description": "Change your email",
+          "thirdPartyInfo": {
+            "title": "Email cannot be changed",
+            "description": "You have logged in with a third-party provider. Please change your email directly with the provider."
+          }
+        },
+        "password": {
+          "title": "Change Password",
+          "description": "Change your password",
+          "thirdpartyinfo": {
+            "title": "Password cannot be changed",
+            "description": "You have logged in with a third-party provider. Please change your password directly with the provider."
+          }
+        },
+        "settings": {
+          "title": "Settings",
+          "description": "Change your app settings"
+        }
+      },
+      "logout": "Logout",
+      "legal": {
+        "title": "Legal Information",
+        "privacypolicy": {
+          "title": "Privacy Policy"
+        },
+        "termsandconditions": {
+          "title": "Terms of Use"
+        },
+        "imprint": {
+          "title": "Imprint"
+        }
+      },
+      "changepassword": {
+        "screenTitle": "Update Password",
+        "title": "Update Password",
+        "subHeadline": "Enter your new password.",
+        "password": "New Password",
+        "passwordConfirm": "Confirm Password",
+        "oldPassword": "Old Password",
+        "submit": "Change Password",
+        "errors": {
+          "password": {
+            "required": "Password is a required field",
+            "notequals": "Passwords do not match",
+            "passwordStrength": "Password must be at least 8 characters long and contain numbers."
+          },
+          "oldpassword": {
+            "required": "Old Password is a required field",
+            "invalid": "An error occurred. Old password is incorrect."
+          },
+          "unkownError": "An error occurred. Please try again later."
+        },
+        "success": "Password changed successfully"
+      },
+      "changeemail": {
+        "screenTitle": "Update Email",
+        "title": "Update Email",
+        "subHeadline": "Enter your new email.",
+        "email": "New Email",
+        "submit": "Change Email",
+        "errors": {
+          "email": {
+            "required": "Email is a required field",
+            "alreadyexists": "An account with this email address already exists"
+          },
+          "unkownError": "An error occurred. Please try again later."
+        },
+        "success": "A confirmation link has been sent to the new email."
+      },
+      "edituser": {
+        "screenTitle": "Edit Account",
+        "title": "Edit Account",
+        "subHeadline": "Change your profile data",
+        "mail": "Email",
+        "firstname": "First Name",
+        "lastname": "Last Name",
+        "avatarurl": "Profile Picture:",
+        "uploadavatarurl": "Select Profile Picture",
+        "submit": "Save",
+        "success": "Account saved successfully",
+        "errors": {
+          "firstname": {
+            "required": "First Name is a required field"
+          },
+          "lastname": {
+            "required": "Last Name is a required field"
+          },
+          "unknown": "An error occurred"
+        }
+      },
+      "deleteaccount": {
+        "screenTitle": "Verify Account Deletion",
+        "title": "Delete Account",
+        "description": "To delete your account, please enter your email as confirmation. Account deletion is irreversible and all data will be deleted.",
+        "submit": "Delete Account Permanently",
+        "cancel": "Cancel",
+        "email": "Email",
+        "success": "Confirmation link to delete the account has been sent to the email",
+        "errors": {
+          "email": {
+            "required": "Email is a required field",
+            "notmatch": "Email does not match"
+          },
+          "unknown": "An error occurred"
+        }
+      }
+    },
+    "notFound": {
+      "screenTitle": "Page Not Found",
+      "description": "The page you requested could not be found.",
+      "back": "Back to Home"
+    }
+  }
+}

@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Password Reset</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <div class="flex flex-col items-center justify-center min-h-screen">
+      <div class="max-w-md w-full px-6 py-8 bg-white rounded shadow-md" id="container">
+        <h2 class="text-2xl font-medium text-center mb-6">Password Reset</h2>
+        <form
+          id="reset-form"
+          class="space-y-4"
+          method="POST"
+          action="/auth/user/password/reset"
+        >
+          <input type="hidden" id="token" name="token" value="" />
+          <div>
+            <label for="password" class="block mb-1 font-medium"
+              >New Password</label
+            >
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your new password"
+              required
+              class="block w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div>
+            <label for="confirm-password" class="block mb-1 font-medium"
+              >Confirm New Password</label
+            >
+            <input
+              type="password"
+              id="confirm-password"
+              name="confirm-password"
+              placeholder="Confirm your new password"
+              required
+              class="block w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <p id="password-error" class="text-red-500 mb-4 hidden">
+            Passwords do not match
+          </p>
+          <p id="server-error" class="text-red-500 mb-4 hidden"></p>
+          <button
+            type="submit"
+            class="w-full block bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded"
+          >
+            Reset Password
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Extract token from URL query string
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token');
+      if (token) {
+        document.getElementById('token').value = token;
+      }
+
+      // Submit the form
+      const form = document.getElementById('reset-form');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault(); // Prevent the default form submission
+        const password = document.getElementById('password').value;
+        const confirmPassword =
+          document.getElementById('confirm-password').value;
+
+        if (password !== confirmPassword) {
+          document.getElementById('password-error').classList.remove('hidden');
+          return;
+        } else {
+          document.getElementById('password-error').classList.add('hidden');
+        }
+
+        // Send a POST request to the server with password and token
+        // Example using Fetch API:
+        fetch(`/auth/user/password/reset?token=${token}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            formFields: [{ id: 'password', value: password }],
+            token,
+            method: 'token',
+          }),
+        })
+          .then((response) => {
+            // TODO: Handle the response appropriately (e.g., display a success message)
+            console.log(response);
+            response.json().then((json) => {
+              console.log(json);
+              if (json.status === 'OK') {
+                document.getElementById('reset-form').classList.add('hidden');
+                const message = document.createElement('p');
+                message.textContent = 'Password reset successfully!';
+                document.getElementById("container").appendChild(message);
+              } else {
+                document
+                  .getElementById('server-error')
+                  .classList.remove('hidden');
+                document.getElementById('server-error').textContent =
+                  json.formFields && json.formFields.length > 0
+                    ? json.formFields[0].error
+                    : json.message ? json.message : json.status;
+              }
+            });
+          })
+          .catch((error) => {
+            // TODO: Handle the error appropriately (e.g., display an error message)
+            console.error(error);
+          });
+      });
+    </script>
+  </body>
+</html>

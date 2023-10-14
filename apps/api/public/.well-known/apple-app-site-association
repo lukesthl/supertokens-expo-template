@@ -1,0 +1,32 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "3X5J8LXMDM.com.lukesthl.expo-supertokens"
+        ],
+        "components": [
+          {
+            "/": "*",
+            "comment": "Matches all routes"
+          },
+          {
+            "/": "/auth/*",
+            "comment": "Matches any route whose path starts with /auth/",
+            "exclude": true
+          }
+        ]
+      }
+    ]
+  },
+  "activitycontinuation": {
+    "apps": [
+      "3X5J8LXMDM.com.lukesthl.expo-supertokens"
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "3X5J8LXMDM.com.lukesthl.expo-supertokens"
+    ]
+  }
+}

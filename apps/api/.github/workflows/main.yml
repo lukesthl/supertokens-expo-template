@@ -1,0 +1,112 @@
+name: Deploy Production
+# This workflow builds Docker images for each app, then pushes the images to GitHub Container Registry
+# After all images are built and pushed successfully, it deploys each image to Caprover (staging)
+
+on:
+  workflow_run:
+    workflows: ['Lint']
+    branches: [main]
+    types:
+      - completed
+  # Allow this workflow to be triggered manually (ex: in GitHub UI)
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    environment: production
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      # output the image tag that was built and pushed so we can deploy this image tag in the deploy job
+      image-tag: ${{ steps.set-image-tag.outputs.image-tag }}
+    steps:
+      #
+      # ------------------ Setup -----------------------
+      #
+
+      # checkout GitHub repository
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # If merge event triggered this, get the name of the branch
+      - name: Get branch name (merge)
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | tr / -)" >> $GITHUB_ENV
+
+      # If PR create event triggered this, get the name of the branch
+      - name: Get branch name (pull request)
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_HEAD_REF} | tr / -)" >> $GITHUB_ENV
+
+      # install QEMU, a utility for building docker images
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # This creates docker tags
+      # https://github.com/docker/build-push-action/blob/master/docs/advanced/tags-labels.md
+      - name: Docker meta
+        id: docker-meta
+        uses: docker/metadata-action@v4
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            ghcr.io/${{ github.repository }}
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=sha,prefix=${{ env.BRANCH_NAME }}-,priority=1000
+            type=semver,priority=900,pattern={{version}},prefix=staging-
+      - name: 'Build and push image'
+        uses: docker/build-push-action@v3
+        with:
+          file: 'Dockerfile'
+          context: '.'
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.docker-meta.outputs.tags }}
+          labels: ${{ steps.docker-meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - id: set-image-tag
+        run: echo "image-tag=${{ fromJson(steps.docker-meta.outputs.json).tags[0] }}" >> $GITHUB_OUTPUT
+  deploy:
+    name: Deploy Production
+    runs-on: ubuntu-latest
+    needs: [build]
+    environment: production
+    concurrency: production
+
+    env:
+      CAPROVER_URL: ${{ secrets.CAPROVER_URL }}
+      CAPROVER_APP_TOKEN: ${{ secrets.CAPROVER_APP_TOKEN }}
+    strategy:
+      matrix:
+        include:
+          - app: ${{ github.event.repository.name }} # name of the app in Caprover
+            token-key: env.CAPROVER_APP_TOKEN # key used to get CAPROVER_APP_TOKEN from env
+            image: ${{ needs.build.outputs.image-tag }} # image to deploy
+    steps:
+      # Install Caprover CLI, which we use to deploy images to Caprover
+      - name: 'Install caprover-cli'
+        run: npm install -g caprover
+
+      # Deploy each app by iterating over matrix values
+      - name: 'Deploy ${{ matrix.app }}'
+        env:
+          APP_NAME: ${{ matrix.app }}
+          APP_URL: ${{ env.CAPROVER_URL }}
+          CAPROVER_APP_TOKEN: ${{ env.CAPROVER_APP_TOKEN }}
+          IMAGE_NAME: ${{ matrix.image }}
+        run: 'caprover deploy --caproverUrl=$APP_URL --appToken=$CAPROVER_APP_TOKEN --imageName=$IMAGE_NAME --appName=$APP_NAME'
