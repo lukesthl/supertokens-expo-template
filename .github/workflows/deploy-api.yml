@@ -32,9 +32,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Go to apps/api
-        run: cd apps/api
-
       # If merge event triggered this, get the name of the branch
       - name: Get branch name (merge)
         if: github.event_name != 'pull_request'
@@ -75,7 +72,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           file: 'Dockerfile'
-          context: '.'
+          context: '{{defaultContext}}:apps/api'
           platforms: linux/amd64
           push: true
           tags: ${{ steps.docker-meta.outputs.tags }}
