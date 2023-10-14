@@ -98,15 +98,10 @@ jobs:
             token-key: env.CAPROVER_APP_TOKEN # key used to get CAPROVER_APP_TOKEN from env
             image: ${{ needs.build.outputs.image-tag }} # image to deploy
     steps:
-      # Install Caprover CLI, which we use to deploy images to Caprover
-      - name: 'Install caprover-cli'
-        run: npm install -g caprover
-
-      # Deploy each app by iterating over matrix values
       - name: 'Deploy ${{ matrix.app }}'
-        env:
-          APP_NAME: ${{ matrix.app }}
-          APP_URL: ${{ env.CAPROVER_URL }}
-          CAPROVER_APP_TOKEN: ${{ env.CAPROVER_APP_TOKEN }}
-          IMAGE_NAME: ${{ matrix.image }}
-        run: 'caprover deploy --caproverUrl=$APP_URL --appToken=$CAPROVER_APP_TOKEN --imageName=$IMAGE_NAME --appName=$APP_NAME'
+        uses: caprover/deploy-from-github@main
+        with:
+          server: '${{ env.CAPROVER_URL }}'
+          app: '${{ matrix.app }}'
+          token: '${{ env.CAPROVER_APP_TOKEN }}'
+          image: '${{ matrix.image }}' # optional
