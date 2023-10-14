@@ -64,7 +64,7 @@ To use this template, follow the steps below:
 9. Select the simulator build and install it on the simulator  
    `eas build:run`
 10. Start Expo Dev Client  
-    `npx expo start --dev-client`
+    `cd ../../ && yarn native`
 
 ### Customizing the Prebuilt Screens
 

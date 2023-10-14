@@ -1,9 +1,11 @@
-name: Lint
+name: Lint API
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'apps/api/**'
   pull_request:
     branches:
       - main
@@ -27,6 +29,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
+
+      - name: Go to apps/api
+        run: cd apps/api
 
       - uses: pnpm/action-setup@v2
         name: Install pnpm

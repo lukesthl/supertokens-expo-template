@@ -1,4 +1,4 @@
-name: Deploy Production
+name: Deploy API to Caprover
 # This workflow builds Docker images for each app, then pushes the images to GitHub Container Registry
 # After all images are built and pushed successfully, it deploys each image to Caprover (staging)
 
@@ -31,6 +31,9 @@ jobs:
       # checkout GitHub repository
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Go to apps/api
+        run: cd apps/api
 
       # If merge event triggered this, get the name of the branch
       - name: Get branch name (merge)
