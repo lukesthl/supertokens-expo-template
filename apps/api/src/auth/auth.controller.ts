@@ -24,7 +24,7 @@ import {
 } from 'supertokens-node/recipe/usermetadata';
 import { SessionContainer } from 'supertokens-node/recipe/session';
 import { JwtService } from '@nestjs/jwt';
-import { deleteUser } from 'supertokens-node';
+import supertokens, { deleteUser } from 'supertokens-node';
 import { EmailService } from '../email/email.service';
 
 @Controller()
@@ -40,14 +40,14 @@ export class AuthController {
   async getSession(@Session() session: SessionContainer) {
     const [metaDataResponse, user, roles] = await Promise.all([
       getUserMetadata(session.getUserId()),
-      ThirdPartyEmailPassword.getUserById(session.getUserId()),
+      supertokens.getUser(session.getUserId()),
       UserRoles.getRolesForUser(session.getTenantId(), session.getUserId()),
     ]);
     if (!user) {
       throw new UnauthorizedException();
     }
     return {
-      metadata: { ...metaDataResponse.metadata, email: user.email },
+      metadata: { ...metaDataResponse.metadata, email: user.emails[0] },
       session: {
         thirdParty: user.thirdParty ?? null,
         userId: session.getUserId(),
@@ -98,7 +98,7 @@ export class AuthController {
     );
     if (response.status === 'OK') {
       await ThirdPartyEmailPassword.updateEmailOrPassword({
-        userId: response.user.id,
+        recipeUserId: response.user.recipeUserId,
         email: response.user.email,
       });
     }
@@ -121,7 +121,7 @@ export class AuthController {
     const { oldPassword, newPassword } = body;
     const userId = session.getUserId();
 
-    const userInfo = await ThirdPartyEmailPassword.getUserById(userId);
+    const userInfo = await supertokens.getUser(userId);
 
     if (userInfo === undefined) {
       throw new Error('Should never come here');
@@ -130,7 +130,7 @@ export class AuthController {
     const passwordValidResponse =
       await ThirdPartyEmailPassword.emailPasswordSignIn(
         session.getTenantId(),
-        userInfo.email,
+        userInfo.emails[0],
         oldPassword,
       );
 
@@ -139,7 +139,7 @@ export class AuthController {
     }
 
     const response = await ThirdPartyEmailPassword.updateEmailOrPassword({
-      userId,
+      recipeUserId: session.getRecipeUserId(),
       password: newPassword,
       tenantIdForPasswordPolicy: session!.getTenantId(),
     });
@@ -177,8 +177,8 @@ export class AuthController {
       };
     }
 
-    const sessionId = session.getUserId();
-    const userAccount = await ThirdPartyEmailPassword.getUserById(sessionId!);
+    const userId = session.getUserId();
+    const userAccount = await supertokens.getUser(userId!);
     if (userAccount.thirdParty !== undefined) {
       return {
         status: 'GENERAL_ERROR',
@@ -187,20 +187,20 @@ export class AuthController {
     }
 
     const isVerified = await EmailVerification.isEmailVerified(
-      session.getUserId(),
+      session.getRecipeUserId(),
       email,
     );
 
     if (!isVerified) {
-      const user = await ThirdPartyEmailPassword.getUserById(
-        session.getUserId(),
-      );
+      const user = await supertokens.getUser(session.getUserId());
       for (const tenantId of user.tenantIds) {
         // Since once user can be shared across many tenants, we need to check if
         // the email already exists in any of the tenants.
-        const usersWithEmail = await ThirdPartyEmailPassword.getUsersByEmail(
+        const usersWithEmail = await supertokens.listUsersByAccountInfo(
           tenantId,
-          email,
+          {
+            email,
+          },
         );
         for (const userWithEmail of usersWithEmail) {
           if (userWithEmail.id !== session.getUserId()) {
@@ -215,13 +215,14 @@ export class AuthController {
       const response = await EmailVerification.sendEmailVerificationEmail(
         session.getTenantId(),
         session.getUserId(),
+        session.getRecipeUserId(),
         email,
       );
       return response;
     }
 
     const response = await ThirdPartyEmailPassword.updateEmailOrPassword({
-      userId: session.getUserId(),
+      recipeUserId: session.getRecipeUserId(),
       email: email,
     });
 
@@ -242,14 +243,14 @@ export class AuthController {
       expiresIn: '15m',
     });
 
-    const response = await ThirdPartyEmailPassword.getUserById(userId);
+    const response = await supertokens.getUser(userId);
     if (!response) {
       throw new BadRequestException();
     }
-    const { email } = response;
+    const { emails } = response;
     const deleteUrl = `${process.env.API_DOMAIN}/auth/delete-account/verify?token=${token}`;
     await this.emailService.sendAccountDeletionMail({
-      email,
+      email: emails[0],
       accountDeletionLink: deleteUrl,
     });
     return {

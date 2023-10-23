@@ -58,7 +58,10 @@ export class SupertokensService {
                   }
                   const response =
                     await originalImplementation.thirdPartySignInUpPOST(input);
-                  if (response.status === 'OK' && response.createdNewUser) {
+                  if (
+                    response.status === 'OK' &&
+                    response.createdNewRecipeUser
+                  ) {
                     let updatedUser:
                       | {
                           first_name?: string;
@@ -66,7 +69,8 @@ export class SupertokensService {
                           avatarUrl?: string;
                         }
                       | undefined = undefined;
-                    if (response.user.thirdParty.id === 'apple') {
+                    const [thirdParty] = response.user.thirdParty;
+                    if (thirdParty.id === 'apple') {
                       const user = response.rawUserInfoFromProvider
                         .fromIdTokenPayload.user as {
                         email: string;
@@ -77,7 +81,7 @@ export class SupertokensService {
                         first_name: user.first_name,
                         last_name: user.last_name,
                       };
-                    } else if (response.user.thirdParty.id === 'github') {
+                    } else if (thirdParty.id === 'github') {
                       const rawUser = response.rawUserInfoFromProvider
                         .fromUserInfoAPI as {
                         user: {
@@ -92,7 +96,7 @@ export class SupertokensService {
                           : undefined,
                         last_name: '',
                       };
-                    } else if (response.user.thirdParty.id === 'google') {
+                    } else if (thirdParty.id === 'google') {
                       const user = response.rawUserInfoFromProvider
                         .fromIdTokenPayload as {
                         email: string;
@@ -144,7 +148,8 @@ export class SupertokensService {
                     await EmailVerification.sendEmailVerificationEmail(
                       input.tenantId,
                       response.user.id,
-                      response.user.email,
+                      response.session.getRecipeUserId(),
+                      response.user.emails[0],
                       input.userContext,
                     );
                     await UserRoles.createNewRoleOrAddPermissions('user', [

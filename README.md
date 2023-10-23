@@ -89,6 +89,7 @@ The main apps are:
 
 - [ ] Add support for Android devices (Deep Linking, Sign in with Apple, etc.)
 - [ ] Add support for Expo Web
+- [ ] Support account linking
 
 ## Learn more
 

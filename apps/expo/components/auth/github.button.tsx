@@ -1,51 +1,51 @@
-import { LmButton } from "@tamagui-extras/core";
-import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
-import { router } from "expo-router";
-import * as WebBrowser from "expo-web-browser";
-import * as React from "react";
-import { Path, Svg } from "react-native-svg";
-import { translate } from "../translate";
-import { AuthStore } from "./auth.store";
-import { appConfig } from "../../constants/app.config";
+import { LmButton } from '@tamagui-extras/core'
+import { makeRedirectUri, useAuthRequest } from 'expo-auth-session'
+import { router } from 'expo-router'
+import * as WebBrowser from 'expo-web-browser'
+import * as React from 'react'
+import { Path, Svg } from 'react-native-svg'
+import { translate } from '../translate'
+import { AuthStore } from './auth.store'
+import { appConfig } from '../../constants/app.config'
 
-WebBrowser.maybeCompleteAuthSession();
+WebBrowser.maybeCompleteAuthSession()
 
-const CLIENT_ID = process.env.EXPO_PUBLIC_GITHUB_CLIENT_ID as string;
+const CLIENT_ID = process.env.EXPO_PUBLIC_GITHUB_CLIENT_ID as string
 const discovery = {
-  authorizationEndpoint: "https://github.com/login/oauth/authorize",
-  tokenEndpoint: "https://github.com/login/oauth/access_token",
+  authorizationEndpoint: 'https://github.com/login/oauth/authorize',
+  tokenEndpoint: 'https://github.com/login/oauth/access_token',
   revocationEndpoint: `https://github.com/settings/connections/applications/${CLIENT_ID}`,
-};
+}
 export const GithubButton = () => {
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(false)
   const [_request, _response, promptAsync] = useAuthRequest(
     {
       clientId: CLIENT_ID,
-      scopes: ["read:user", "user:email"],
+      scopes: ['read:user', 'user:email'],
       redirectUri: makeRedirectUri({
         scheme: appConfig.bundleIdentifier,
       }),
     },
     discovery
-  );
+  )
   return (
     <LmButton
       loading={loading}
       onPress={async () => {
-        setLoading(true);
+        setLoading(true)
         try {
-          const response = await promptAsync();
-          if (response.type === "success") {
-            const { code } = response.params;
-            await AuthStore.signInWithGithub({ code });
-            router.replace("/(app)/(authorized)/home");
+          const response = await promptAsync()
+          if (response.type === 'success') {
+            const { code } = response.params
+            await AuthStore.signInWithGithub({ code })
+            router.replace('/(app)/(authorized)/home')
           } else {
-            console.error(response);
+            console.error(response)
           }
         } catch (error) {
-          console.log(error);
+          console.log(JSON.stringify(error))
         }
-        setLoading(false);
+        setLoading(false)
       }}
       icon={
         <Svg width="16" height="16" viewBox="0 0 24 24">
@@ -56,7 +56,7 @@ export const GithubButton = () => {
         </Svg>
       }
     >
-      {translate.t("auth.login.github")}
+      {translate.t('auth.login.github')}
     </LmButton>
-  );
-};
+  )
+}
