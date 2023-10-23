@@ -7,6 +7,8 @@
     "fix": "manypkg fix",
     "lint": "pnpm run --filter \"{apps/*}\"  --stream --parallel lint",
     "build": "pnpm run --filter \"{apps/*}\"  --stream --parallel build",
+    "build:api": "pnpm run --filter @acme/api build",
+    "start:prod": "pnpm run --filter @acme/api start:prod",
     "upgrade:tamagui": "pnpm up '*tamagui*'@latest '@tamagui/*'@latest react-native-web-lite@latest",
     "check-deps": "check-dependency-version-consistency ."
   },

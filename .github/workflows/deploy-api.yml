@@ -72,7 +72,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           file: 'Dockerfile'
-          context: '{{defaultContext}}:apps/api'
+          context: '.'
           platforms: linux/amd64
           push: true
           tags: ${{ steps.docker-meta.outputs.tags }}
