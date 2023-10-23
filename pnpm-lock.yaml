@@ -2320,7 +2320,7 @@ packages:
       getenv: 1.0.0
       glob: 7.1.6
       resolve-from: 5.0.0
-      semver: 7.5.4
+      semver: 7.5.3
       slash: 3.0.0
       xcode: 3.0.1
       xml2js: 0.6.0
