@@ -18,7 +18,7 @@ This project template provides the backend for developing a React Native applica
 To use this template, follow the steps below:
 
 1. Install dependencies  
-   `yarn install`
+   `pnpm install`
 2. Configure the Supertokens Backend with your authentication providers (Apple, GitHub, Google, etc.)
 3. Setup environment variables:
 
@@ -34,7 +34,7 @@ To use this template, follow the steps below:
   ```
 
 5. Start the app  
-   `yarn run api`
+   `pnpm run api`
 
 ### Configuring the Authentication Providers
 

@@ -38,7 +38,7 @@ To use this template, follow the steps below:
 1. Clone the repository  
    `git clone https://github.com/lukesthl/supertokens-expo-template`
 2. Install dependencies  
-   `yarn install`
+   `pnpm install`
 3. Configure the Supertokens Backend with your authentication providers (Apple, GitHub, Google, etc.)
    <br> [**Backend Setup Guide**](./apps/api/README.md)
 4. Setup environment variables:
@@ -64,7 +64,7 @@ To use this template, follow the steps below:
 9. Select the simulator build and install it on the simulator  
    `eas build:run`
 10. Start Expo Dev Client  
-    `cd ../../ && yarn native`
+    `cd ../../ && pnpm native`
 
 ### Customizing the Prebuilt Screens
 

@@ -1,24 +1,13 @@
 {
-  "name": "tamagui-monorepo-test",
+  "name": "supertokens-expo-template",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
-    "native": "cd apps/expo && yarn run dev:client",
-    "watch": "yarn workspaces foreach -pi run watch",
-    "vercel:install": "yarn set version 3.5 && yarn install",
-    "api": "yarn workspace api dev",
-    "web": "yarn build && cd apps/next && yarn next",
-    "web:extract": "DISABLE_EXTRACTION=false yarn workspace next-app dev",
-    "web:prod": "yarn workspace next-app build",
-    "web:prod:serve": "yarn workspace next-app serve",
+    "native": "pnpm run --filter @acme/expo dev:client",
+    "api": "pnpm run --filter @acme/api dev",
     "fix": "manypkg fix",
-    "lint": "yarn workspaces foreach -pi run lint",
-    "build": "yarn workspaces foreach --exclude next-app run build",
-    "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest react-native-web-lite@latest",
-    "upgrade:tamagui:canary": "yarn up '*tamagui*'@canary '@tamagui/*'@canary react-native-web-lite@canary",
+    "lint": "pnpm run --filter \"{apps/*}\"  --stream --parallel lint",
+    "build": "pnpm run --filter \"{apps/*}\"  --stream --parallel build",
+    "upgrade:tamagui": "pnpm up '*tamagui*'@latest '@tamagui/*'@latest react-native-web-lite@latest",
     "check-deps": "check-dependency-version-consistency ."
   },
   "resolutions": {
@@ -37,6 +26,5 @@
     "prettier": "^3.0.3",
     "turbo": "^1.10.3",
     "typescript": "^5.2.2"
-  },
-  "packageManager": "yarn@3.6.3"
+  }
 }

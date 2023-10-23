@@ -29,12 +29,27 @@ jobs:
         with:
           node-version: 20
 
-      - name: Run install
-        uses: borales/actions-yarn@v4
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
         with:
-          cmd: install
+          version: 8
+          run_install: false
 
-      - name: Run lint
-        uses: borales/actions-yarn@v4
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
         with:
-          cmd: lint
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run linters
+        run: 'pnpm run lint && pnpm run format'
