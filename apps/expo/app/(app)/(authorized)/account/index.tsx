@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Linking, Platform, RefreshControl, useColorScheme } from "react-native";
-import type { Href } from "expo-router";
 import { Link, router, Stack } from "expo-router";
 import {
   AlertTriangle,
@@ -139,7 +138,7 @@ const Account = observer(() => {
           <H4>{translate.t("account.legal.title")}</H4>
           <YGroup alignSelf="center" bordered size="$5" separator={<Separator />}>
             <YGroup.Item>
-              <Link href={appConfig.privacyPolicyUrl as Href<string>} asChild>
+              <Link href={appConfig.privacyPolicyUrl} asChild>
                 <ListItem
                   hoverTheme
                   pressTheme
@@ -169,7 +168,7 @@ const Account = observer(() => {
               </ListItem>
             </YGroup.Item>
             <YGroup.Item>
-              <Link href={appConfig.imprintUrl as Href<string>} asChild>
+              <Link href={appConfig.imprintUrl} asChild>
                 <ListItem
                   hoverTheme
                   pressTheme

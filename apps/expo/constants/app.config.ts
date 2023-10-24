@@ -4,4 +4,4 @@ export const appConfig = {
   contactUsUrl: "https://www.google.com",
   imprintUrl: "https://www.google.com",
   bundleIdentifier: "com.lukesthl.expo-supertokens",
-};
+} as const;

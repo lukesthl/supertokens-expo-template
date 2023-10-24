@@ -1,4 +1,3 @@
-import type { Href } from "expo-router";
 import { Link, router, Stack } from "expo-router";
 import { LmButton } from "@tamagui-extras/core";
 import { LmInput } from "@tamagui-extras/form";
@@ -163,13 +162,13 @@ export default function SignUp() {
                     }}
                   >
                     <Text>{translate.t("auth.signUp.privacyPolicy.0" as "auth.signUp.privacyPolicy")}</Text>
-                    <Link href={appConfig.privacyPolicyUrl as Href<string>}>
+                    <Link href={appConfig.privacyPolicyUrl}>
                       <Text textDecorationLine="underline">
                         {translate.t("auth.signUp.privacyPolicy.1" as "auth.signUp.privacyPolicy")}
                       </Text>
                     </Link>
                     <Text>{translate.t("auth.signUp.privacyPolicy.2" as "auth.signUp.privacyPolicy")}</Text>
-                    <Link href={appConfig.termsAndConditionsUrl as Href<string>}>
+                    <Link href={appConfig.termsAndConditionsUrl}>
                       <Text textDecorationLine="underline">
                         {translate.t("auth.signUp.privacyPolicy.3" as "auth.signUp.privacyPolicy")}
                       </Text>

@@ -1,5 +1,4 @@
 import React from "react";
-import type { Href } from "expo-router";
 import { Link, router, Stack } from "expo-router";
 import { LmButton } from "@tamagui-extras/core";
 import { LmInput } from "@tamagui-extras/form";
@@ -51,7 +50,7 @@ export default function SignIn() {
                 if (error?.name === "USER_NOT_CONFIRMED_ERROR") {
                   try {
                     await AuthStore.verifyEmail();
-                    router.push(("/auth/email/verify-sent" + `?mail=${values.email}`) as Href<unknown>);
+                    router.push(`/auth/email/verify-sent?mail=${values.email}`);
                   } catch (errorTmp) {
                     setErrors({
                       password: translate.t("auth.login.errors.unknown"),
