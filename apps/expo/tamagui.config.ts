@@ -87,6 +87,6 @@ declare module "tamagui" {
 
   // work everywhere you import `tamagui`
 
-  type TamaguiCustomConfig = AppConfig
+  type TamaguiCustomConfig = AppConfig;
 }
 export default config;

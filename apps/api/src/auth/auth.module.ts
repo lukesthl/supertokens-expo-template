@@ -5,7 +5,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { EmailService } from "../email/email.service";
 import { AuthController } from "./auth.controller";
 import { AuthMiddleware } from "./auth.middleware";
-import type { AuthModuleConfig} from "./config.interface";
+import type { AuthModuleConfig } from "./config.interface";
 import { ConfigInjectionToken } from "./config.interface";
 import { SupertokensService } from "./supertokens/supertokens.service";
 
