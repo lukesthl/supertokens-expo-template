@@ -24,7 +24,7 @@ const animations = createAnimations({
     stiffness: 250,
   },
 });
-const headingFont = createInterFont();
+const headingFont = createInterFont({ family: "InterBold" });
 const bodyFont = createInterFont();
 const config = createTamagui({
   animations,

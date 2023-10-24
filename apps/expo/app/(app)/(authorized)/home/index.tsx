@@ -76,4 +76,5 @@ const Home = observer(() => {
     </YStack>
   );
 });
+
 export default Home;
