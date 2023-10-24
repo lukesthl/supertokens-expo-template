@@ -1,17 +1,16 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
-import { ToastProvider, ToastViewport } from "@tamagui/toast";
-import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import { useColorScheme } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useFonts } from "expo-font";
+import { SplashScreen, Stack } from "expo-router";
+import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
+import { ToastProvider, ToastViewport } from "@tamagui/toast";
 import { TamaguiProvider, Theme } from "tamagui";
+
 import { translate } from "../components/translate";
+
 import "../supertoken.config";
+
 import config from "../tamagui.config";
 
 export { ErrorBoundary } from "expo-router";
@@ -25,7 +24,9 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
   });
 
@@ -54,29 +55,21 @@ function RootLayoutNav() {
 
   useEffect(() => {
     if (colorScheme !== currentColorScheme) {
-      onColorSchemeChange.current = setTimeout(
-        () => setCurrentColorScheme(colorScheme),
-        1000
-      );
+      onColorSchemeChange.current = setTimeout(() => setCurrentColorScheme(colorScheme), 1000);
     } else if (onColorSchemeChange.current) {
       clearTimeout(onColorSchemeChange.current);
     }
   }, [colorScheme]);
   useEffect(() => {
-    translate.init();
+    void translate.init();
   }, []);
   return (
     <TamaguiProvider config={config}>
       <Theme name={currentColorScheme === "dark" ? "dark" : "light"}>
-        <ThemeProvider
-          value={currentColorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
+        <ThemeProvider value={currentColorScheme === "dark" ? DarkTheme : DefaultTheme}>
           <ToastProvider swipeDirection="up">
             <Stack>
-              <Stack.Screen
-                name="(app)/(authorized)"
-                options={{ headerShown: false }}
-              />
+              <Stack.Screen name="(app)/(authorized)" options={{ headerShown: false }} />
               <Stack.Screen name="index" options={{ headerShown: false }} />
             </Stack>
             <SafeToastViewport />
@@ -89,12 +82,5 @@ function RootLayoutNav() {
 
 const SafeToastViewport = () => {
   const { left, top, right } = useSafeAreaInsets();
-  return (
-    <ToastViewport
-      flexDirection="column-reverse"
-      top={top}
-      left={left}
-      right={right}
-    />
-  );
+  return <ToastViewport flexDirection="column-reverse" top={top} left={left} right={right} />;
 };

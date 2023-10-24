@@ -1,16 +1,18 @@
-import { observer } from "mobx-react-lite";
-import { Button, Text, View, YStack } from "tamagui";
-import { Rest } from "../../../../components/clients/rest.client";
-import { AuthStore } from "../../../../components/auth/auth.store";
 import { useState } from "react";
+import { isAxiosError } from "axios";
+import { observer } from "mobx-react-lite";
+import { Button, Text, YStack } from "tamagui";
+
+import { AuthStore } from "../../../../components/auth/auth.store";
+import { Rest } from "../../../../components/clients/rest.client";
 
 const Home = observer(() => {
   const [adminResponse, setAdminResponse] = useState("");
   return (
-    <YStack mt="$8" space="$3.5" mx="$4">
+    <YStack marginTop="$8" space="$3.5" marginHorizontal="$4">
       <Button
         onPress={() => {
-          Rest.client.get("/test").then((res) => {
+          void Rest.client.get("/test").then((res) => {
             console.log(res.data);
           });
         }}
@@ -20,14 +22,16 @@ const Home = observer(() => {
       <Button
         onPress={() => {
           Rest.client
-            .get("/admin")
+            .get<string>("/admin")
             .then((res) => {
               setAdminResponse(res.data);
               console.log(res.data);
             })
             .catch((err) => {
-              console.log(err.response.data);
-              setAdminResponse(JSON.stringify(err.response.data, null, 4));
+              if (isAxiosError(err) && err.response?.data) {
+                console.log(err.response.data);
+                setAdminResponse(JSON.stringify(err.response.data, null, 4));
+              }
             });
         }}
       >
@@ -40,10 +44,12 @@ const Home = observer(() => {
             .post("/make-me-an-admin")
             .then((res) => {
               console.log(res.data);
-              AuthStore.loadUser();
+              void AuthStore.loadUser();
             })
             .catch((err) => {
-              console.log(err.response.data);
+              if (isAxiosError(err) && err.response?.data) {
+                console.log(err.response.data);
+              }
             });
         }}
       >
@@ -55,10 +61,12 @@ const Home = observer(() => {
             .delete("/remove-admin")
             .then((res) => {
               console.log(res.data);
-              AuthStore.loadUser();
+              void AuthStore.loadUser();
             })
             .catch((err) => {
-              console.log(err.response.data);
+              if (isAxiosError(err) && err.response?.data) {
+                console.log(err.response.data);
+              }
             });
         }}
       >

@@ -1,4 +1,5 @@
-import { YStack, XStack, Separator, Text } from "tamagui";
+import { Separator, Text, XStack, YStack } from "tamagui";
+
 import { AppleButton } from "./apple.button";
 import { GithubButton } from "./github.button";
 import { GoogleButton } from "./google.button";

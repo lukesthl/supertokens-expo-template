@@ -6,6 +6,7 @@
     "api": "pnpm run --filter @acme/api dev",
     "fix": "manypkg fix",
     "lint": "pnpm run --filter \"{apps/*}\"  --stream --parallel lint",
+    "format": "pnpm run --filter \"{apps/*}\"  --stream --parallel format",
     "build": "pnpm run --filter \"{apps/*}\"  --stream --parallel build",
     "build:api": "pnpm run --filter @acme/api build",
     "start:prod": "node dist/main",
@@ -23,9 +24,7 @@
     "@babel/runtime": "^7.23.2",
     "@manypkg/cli": "^0.21.0",
     "check-dependency-version-consistency": "^4.1.0",
-    "eslint": "^8.52.0",
     "node-gyp": "^9.4.0",
-    "prettier": "^3.0.3",
     "turbo": "^1.10.16",
     "typescript": "^5.2.2"
   }

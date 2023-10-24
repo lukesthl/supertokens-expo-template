@@ -1,6 +1,6 @@
-import { Stack } from "expo-router";
-import { AuthProvider } from "../../../components/auth/auth.provider";
 import { Slot } from "expo-router";
+
+import { AuthProvider } from "../../../components/auth/auth.provider";
 
 export const unstable_settings = {
   initialRouteName: "/",

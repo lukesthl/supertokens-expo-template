@@ -1,17 +1,15 @@
+import React from "react";
+import { router, Stack } from "expo-router";
 import { LmButton } from "@tamagui-extras/core";
 import { LmInput } from "@tamagui-extras/form";
 import { useToastController } from "@tamagui/toast";
-import { Stack, router } from "expo-router";
 import { Formik } from "formik";
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { Heading, Text, View, YStack } from "tamagui";
+
 import { AuthError } from "../../../../../components/auth/auth.error";
 import { AuthStore } from "../../../../../components/auth/auth.store";
-import {
-  DismissKeyboard,
-  useSoftKeyboardEffect,
-} from "../../../../../components/keyboard";
+import { DismissKeyboard, useSoftKeyboardEffect } from "../../../../../components/keyboard";
 import { translate } from "../../../../../components/translate";
 
 const ChangePassword = observer(() => {
@@ -32,18 +30,12 @@ const ChangePassword = observer(() => {
           validate={(values) => {
             const errors: Record<string, string> = {};
             if (!values.oldPassword) {
-              errors.oldPassword = translate.t(
-                "account.changepassword.errors.oldpassword.required"
-              );
+              errors.oldPassword = translate.t("account.changepassword.errors.oldpassword.required");
             } else if (!values.password) {
-              errors.password = translate.t(
-                "account.changepassword.errors.password.required"
-              );
+              errors.password = translate.t("account.changepassword.errors.password.required");
             }
             if (values.password !== values.passwordConfirm) {
-              errors.password = translate.t(
-                "account.changepassword.errors.password.notequals"
-              );
+              errors.password = translate.t("account.changepassword.errors.password.notequals");
             }
             return errors;
           }}
@@ -61,28 +53,20 @@ const ChangePassword = observer(() => {
               if (error instanceof AuthError) {
                 if (error?.name === "WRONG_CREDENTIALS_ERROR") {
                   setErrors({
-                    oldPassword: translate.t(
-                      "account.changepassword.errors.oldpassword.invalid"
-                    ),
+                    oldPassword: translate.t("account.changepassword.errors.oldpassword.invalid"),
                   });
                 } else if (error.name === "PASSWORD_POLICY_VIOLATED_ERROR") {
                   setErrors({
-                    password: translate.t(
-                      "account.changepassword.errors.password.passwordStrength"
-                    ),
+                    password: translate.t("account.changepassword.errors.password.passwordStrength"),
                   });
                 } else {
                   setErrors({
-                    password: translate.t(
-                      "account.changepassword.errors.unkownError"
-                    ),
+                    password: translate.t("account.changepassword.errors.unkownError"),
                   });
                 }
               } else {
                 setErrors({
-                  password: translate.t(
-                    "account.changepassword.errors.unkownError"
-                  ),
+                  password: translate.t("account.changepassword.errors.unkownError"),
                 });
                 console.log(error);
               }
@@ -90,26 +74,17 @@ const ChangePassword = observer(() => {
             setSubmitting(false);
           }}
         >
-          {({
-            values,
-            errors,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting,
-          }) => (
-            <View mt="$8" space="$3.5" mx="$4">
+          {({ values, errors, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+            <View marginTop="$8" space="$3.5" marginHorizontal="$4">
               <View>
                 <Text>{translate.t("account.changepassword.subHeadline")}</Text>
                 <Heading>{translate.t("account.changepassword.title")}</Heading>
               </View>
               <YStack space="$2">
-                <View mb="$2">
+                <View marginBottom="$2">
                   <LmInput
                     isPassword
-                    placeholder={translate.t(
-                      "account.changepassword.oldPassword"
-                    )}
+                    placeholder={translate.t("account.changepassword.oldPassword")}
                     onChangeText={handleChange("oldPassword")}
                     onBlur={handleBlur("oldPassword")}
                     value={values.oldPassword}
@@ -133,20 +108,12 @@ const ChangePassword = observer(() => {
                   onSubmitEditing={() => handleSubmit()}
                   value={values.passwordConfirm}
                   error={!!errors.passwordConfirm}
-                  placeholder={translate.t(
-                    "account.changepassword.passwordConfirm"
-                  )}
+                  placeholder={translate.t("account.changepassword.passwordConfirm")}
                   passwordIconProps={{ color: "$gray10" }}
                 />
               </YStack>
-              {(errors.oldPassword ||
-                errors.password ||
-                errors.passwordConfirm) && (
-                <Text color="$red10">
-                  {errors.passwordConfirm ||
-                    errors.password ||
-                    errors.oldPassword}
-                </Text>
+              {(errors.oldPassword ?? errors.password ?? errors.passwordConfirm) && (
+                <Text color="$red10">{errors.passwordConfirm ?? errors.password ?? errors.oldPassword}</Text>
               )}
               <View>
                 <LmButton onPress={() => handleSubmit()} loading={isSubmitting}>

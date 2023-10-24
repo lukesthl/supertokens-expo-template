@@ -1,8 +1,9 @@
-import { Stack, router, useLocalSearchParams } from "expo-router";
 import React from "react";
-import { Button, Heading, Text, View, XStack, YStack } from "tamagui";
-import { translate } from "../../../../../components/translate";
+import { router, Stack, useLocalSearchParams } from "expo-router";
 import { MailCheck } from "@tamagui/lucide-icons";
+import { Button, Heading, Text, View, XStack, YStack } from "tamagui";
+
+import { translate } from "../../../../../components/translate";
 
 export default function EmailVerifySent() {
   const { mail } = useLocalSearchParams<{
@@ -23,9 +24,7 @@ export default function EmailVerifySent() {
             </View>
           </XStack>
           <YStack mt="$4" space="$2" justifyContent="center">
-            <Heading textAlign="center">
-              {translate.t("auth.signUpConfirm.title")}
-            </Heading>
+            <Heading textAlign="center">{translate.t("auth.signUpConfirm.title")}</Heading>
             <Text color="$gray11" textAlign="center">
               {translate.t("auth.signUpConfirm.description", { mail })}
             </Text>

@@ -1,10 +1,11 @@
-import { LmButton } from "@tamagui-extras/core";
 import { useState } from "react";
 import { Path, Svg } from "react-native-svg";
-import { translate } from "../translate";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { AuthStore } from "./auth.store";
 import { router } from "expo-router";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { LmButton } from "@tamagui-extras/core";
+
+import { translate } from "../translate";
+import { AuthStore } from "./auth.store";
 
 GoogleSignin.configure();
 

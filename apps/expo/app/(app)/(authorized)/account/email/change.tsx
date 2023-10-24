@@ -1,18 +1,16 @@
+import React from "react";
+import { router, Stack } from "expo-router";
 import { LmButton } from "@tamagui-extras/core";
 import { LmInput } from "@tamagui-extras/form";
 import { useToastController } from "@tamagui/toast";
-import { Stack, router } from "expo-router";
 import { Formik } from "formik";
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { Heading, Text, View, YStack } from "tamagui";
+
 import { AuthError } from "../../../../../components/auth/auth.error";
 import { AuthStore } from "../../../../../components/auth/auth.store";
+import { DismissKeyboard, useSoftKeyboardEffect } from "../../../../../components/keyboard";
 import { translate } from "../../../../../components/translate";
-import {
-  DismissKeyboard,
-  useSoftKeyboardEffect,
-} from "../../../../../components/keyboard";
 
 const ChangeEmail = observer(() => {
   const toast = useToastController();
@@ -32,9 +30,7 @@ const ChangeEmail = observer(() => {
           validate={(values) => {
             const errors: Record<string, string> = {};
             if (!values.email) {
-              errors.email = translate.t(
-                "account.changeemail.errors.email.required"
-              );
+              errors.email = translate.t("account.changeemail.errors.email.required");
             }
             return errors;
           }}
@@ -53,18 +49,15 @@ const ChangeEmail = observer(() => {
                   const errors = error.formFields.map((field) => ({
                     [field.id]: field.error,
                   }));
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                   setErrors(Object.assign({}, ...errors));
                 } else if (error.name === "EMAIL_ALREADY_EXISTS_ERROR") {
                   setErrors({
-                    email: translate.t(
-                      "account.changeemail.errors.email.alreadyexists"
-                    ),
+                    email: translate.t("account.changeemail.errors.email.alreadyexists"),
                   });
                 } else {
                   setErrors({
-                    email: translate.t(
-                      "account.changeemail.errors.unkownError"
-                    ),
+                    email: translate.t("account.changeemail.errors.unkownError"),
                   });
                 }
               } else {
@@ -77,15 +70,8 @@ const ChangeEmail = observer(() => {
             setSubmitting(false);
           }}
         >
-          {({
-            values,
-            errors,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting,
-          }) => (
-            <View mt="$8" space="$3.5" mx="$4">
+          {({ values, errors, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+            <View marginTop="$8" space="$3.5" marginHorizontal="$4">
               <View>
                 <Text>{translate.t("account.changeemail.subHeadline")}</Text>
                 <Heading>{translate.t("account.changeemail.title")}</Heading>

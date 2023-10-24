@@ -1,10 +1,13 @@
 import { LmButton } from "@tamagui-extras/core";
-import {} from "@tamagui/lucide-icons";
+
+import "@tamagui/lucide-icons";
+
 import { useState } from "react";
 import { Path, Svg } from "react-native-svg";
+import { router } from "expo-router";
+
 import { translate } from "../translate";
 import { AuthStore } from "./auth.store";
-import { router } from "expo-router";
 
 export const AppleButton = () => {
   const [loading, setLoading] = useState(false);

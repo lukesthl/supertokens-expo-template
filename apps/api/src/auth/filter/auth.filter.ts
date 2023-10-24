@@ -1,14 +1,15 @@
-import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
-import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
-
-import { errorHandler } from 'supertokens-node/framework/express';
-import { Error as STError } from 'supertokens-node';
+import type { ArgumentsHost, ExceptionFilter } from "@nestjs/common";
+import { Catch } from "@nestjs/common";
+import type { ErrorRequestHandler, NextFunction, Request, Response } from "express";
+import { Error as STError } from "supertokens-node";
+import { errorHandler } from "supertokens-node/framework/express";
 
 @Catch(STError)
 export class SupertokensExceptionFilter implements ExceptionFilter {
   handler: ErrorRequestHandler;
 
   constructor() {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.handler = errorHandler();
   }
 
@@ -20,11 +21,6 @@ export class SupertokensExceptionFilter implements ExceptionFilter {
       return;
     }
 
-    this.handler(
-      exception,
-      ctx.getRequest<Request>(),
-      resp,
-      ctx.getNext<NextFunction>(),
-    );
+    this.handler(exception, ctx.getRequest<Request>(), resp, ctx.getNext<NextFunction>());
   }
 }

@@ -1,26 +1,16 @@
+import type { Href } from "expo-router";
+import { Link, router, Stack } from "expo-router";
 import { LmButton } from "@tamagui-extras/core";
 import { LmInput } from "@tamagui-extras/form";
 import { Check } from "@tamagui/lucide-icons";
-import { Href, Link, Stack, router } from "expo-router";
 import { Formik } from "formik";
-import React from "react";
-import {
-  Button,
-  Checkbox,
-  Heading,
-  Input,
-  Label,
-  ScrollView,
-  Text,
-  View,
-  XStack,
-  YStack,
-} from "tamagui";
+import { Button, Checkbox, Heading, Input, ScrollView, Text, View, XStack, YStack } from "tamagui";
+
 import { AuthError } from "../../../../components/auth/auth.error";
 import { AuthStore } from "../../../../components/auth/auth.store";
 import { SocialProviders } from "../../../../components/auth/socialproviders";
-import { translate } from "../../../../components/translate";
 import { useSoftKeyboardEffect } from "../../../../components/keyboard";
+import { translate } from "../../../../components/translate";
 import { appConfig } from "../../../../constants/app.config";
 
 export default function SignUp() {
@@ -48,30 +38,18 @@ export default function SignUp() {
             const errors: Record<string, string | boolean> = {};
             if (!values.email) {
               errors.email = translate.t("auth.signUp.errors.email.required");
-            } else if (
-              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-            ) {
+            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
               errors.email = translate.t("auth.signUp.errors.email.invalid");
             } else if (!values.password || !values.passwordConfirm) {
-              errors.password = translate.t(
-                "auth.signUp.errors.password.required"
-              );
+              errors.password = translate.t("auth.signUp.errors.password.required");
             } else if (!values.firstName) {
-              errors.firstName = translate.t(
-                "auth.signUp.errors.firstName.required"
-              );
+              errors.firstName = translate.t("auth.signUp.errors.firstName.required");
             } else if (!values.lastName) {
-              errors.lastName = translate.t(
-                "auth.signUp.errors.lastName.required"
-              );
+              errors.lastName = translate.t("auth.signUp.errors.lastName.required");
             } else if (!(values.password === values.passwordConfirm)) {
-              errors.password = translate.t(
-                "auth.signUp.errors.passwordConfirm.invalid"
-              );
+              errors.password = translate.t("auth.signUp.errors.passwordConfirm.invalid");
             } else if (!values.privacyPolicy) {
-              errors.privacyPolicy = translate.t(
-                "auth.signUp.errors.privacyPolicy.required"
-              );
+              errors.privacyPolicy = translate.t("auth.signUp.errors.privacyPolicy.required");
             }
             console.log(errors);
             return errors;
@@ -91,6 +69,7 @@ export default function SignUp() {
                   const errors = error.formFields.map((field) => ({
                     [field.id]: field.error,
                   }));
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                   setErrors(Object.assign({}, ...errors));
                 } else {
                   setErrors({
@@ -104,16 +83,8 @@ export default function SignUp() {
             setSubmitting(false);
           }}
         >
-          {({
-            values,
-            errors,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            setFieldValue,
-            isSubmitting,
-          }) => (
-            <View mt="$8" space="$3.5" mx="$4">
+          {({ values, errors, handleChange, handleBlur, handleSubmit, setFieldValue, isSubmitting }) => (
+            <View marginTop="$8" space="$3.5" marginHorizontal="$4">
               <View>
                 <Text>{translate.t("auth.signUp.subHeadline")}</Text>
                 <Heading>{translate.t("auth.signUp.title")}</Heading>
@@ -173,9 +144,9 @@ export default function SignUp() {
                 <XStack>
                   <Checkbox
                     size="$4"
-                    defaultChecked={values.privacyPolicy}
+                    checked={values.privacyPolicy}
                     onCheckedChange={(value) => {
-                      setFieldValue("privacyPolicy", value);
+                      void setFieldValue("privacyPolicy", value);
                     }}
                     id="checkbox-privacypolicy"
                   >
@@ -183,44 +154,36 @@ export default function SignUp() {
                       <Check />
                     </Checkbox.Indicator>
                   </Checkbox>
-                  <Label ml="$2.5" mt="$1" htmlFor="checkbox-privacypolicy">
-                    {/* <XStack flexWrap="wrap" space="$1"> */}
-                    <View>
-                      <Text>
-                        {translate.t("auth.signUp.privacyPolicy.0" as any)}
+                  <XStack
+                    flexWrap="wrap"
+                    space="$1"
+                    marginLeft="$2.5"
+                    onPress={() => {
+                      void setFieldValue("privacyPolicy", !values.privacyPolicy);
+                    }}
+                  >
+                    <Text>{translate.t("auth.signUp.privacyPolicy.0" as "auth.signUp.privacyPolicy")}</Text>
+                    <Link href={appConfig.privacyPolicyUrl as Href<string>}>
+                      <Text textDecorationLine="underline">
+                        {translate.t("auth.signUp.privacyPolicy.1" as "auth.signUp.privacyPolicy")}
                       </Text>
-                      <Link href={appConfig.privacyPolicyUrl as Href<string>}>
-                        <Text textDecorationLine="underline">
-                          {translate.t("auth.signUp.privacyPolicy.1" as any)}
-                        </Text>
-                      </Link>
-                      <Text>
-                        {translate.t("auth.signUp.privacyPolicy.2" as any)}
+                    </Link>
+                    <Text>{translate.t("auth.signUp.privacyPolicy.2" as "auth.signUp.privacyPolicy")}</Text>
+                    <Link href={appConfig.termsAndConditionsUrl as Href<string>}>
+                      <Text textDecorationLine="underline">
+                        {translate.t("auth.signUp.privacyPolicy.3" as "auth.signUp.privacyPolicy")}
                       </Text>
-                      <Link
-                        href={appConfig.termsAndConditionsUrl as Href<string>}
-                      >
-                        <Text textDecorationLine="underline">
-                          {translate.t("auth.signUp.privacyPolicy.3" as any)}
-                        </Text>
-                      </Link>
-                      <Text>
-                        {translate.t("auth.signUp.privacyPolicy.4" as any)}
-                      </Text>
-                    </View>
-                    {/* </XStack> */}
-                  </Label>
+                    </Link>
+                    <Text>{translate.t("auth.signUp.privacyPolicy.4" as "auth.signUp.privacyPolicy")}</Text>
+                  </XStack>
                 </XStack>
-
-                <XStack justifyContent={"space-between"} alignItems="center">
-                  <Text color="$red10">
-                    {errors.firstName ||
-                      errors.lastName ||
-                      errors.privacyPolicy ||
-                      errors.email ||
-                      errors.password}
-                  </Text>
-                </XStack>
+                {JSON.stringify(errors) !== "{}" && (
+                  <XStack justifyContent={"space-between"} alignItems="center">
+                    <Text color="$red10">
+                      {errors.firstName ?? errors.lastName ?? errors.privacyPolicy ?? errors.email ?? errors.password}
+                    </Text>
+                  </XStack>
+                )}
               </YStack>
               <View>
                 <LmButton onPress={() => handleSubmit()} loading={isSubmitting}>
@@ -228,13 +191,13 @@ export default function SignUp() {
                 </LmButton>
                 <Button
                   onPress={() => router.back()}
-                  bg="transparent"
+                  backgroundColor="transparent"
                   pressStyle={{
-                    bg: "transparent",
+                    backgroundColor: "transparent",
                     borderWidth: 0,
                   }}
                   color="$gray10"
-                  mb="$1"
+                  marginBottom="$1"
                 >
                   {translate.t("auth.signUp.login")}
                 </Button>

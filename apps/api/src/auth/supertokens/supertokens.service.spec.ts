@@ -1,7 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { SupertokensService } from './supertokens.service';
+import type { TestingModule } from "@nestjs/testing";
+import { Test } from "@nestjs/testing";
 
-describe('SupertokensService', () => {
+import { SupertokensService } from "./supertokens.service";
+
+describe("SupertokensService", () => {
   let service: SupertokensService;
 
   beforeEach(async () => {
@@ -12,7 +14,7 @@ describe('SupertokensService', () => {
     service = module.get<SupertokensService>(SupertokensService);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 });

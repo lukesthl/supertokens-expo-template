@@ -1,4 +1,4 @@
-import { FormFieldId } from "./form/interfaces";
+import type { FormFieldId } from "./form/interfaces";
 
 export type AuthErrorType =
   | "FIELD_ERROR"

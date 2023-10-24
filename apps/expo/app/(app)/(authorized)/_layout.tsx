@@ -1,13 +1,14 @@
-import { Home, User } from "@tamagui/lucide-icons";
-import { Toast, useToastState } from "@tamagui/toast";
+import { useColorScheme } from "react-native";
 import { BlurView } from "expo-blur";
 import { Tabs } from "expo-router";
+import { Home, User } from "@tamagui/lucide-icons";
+import { Toast, useToastState } from "@tamagui/toast";
 import { observer } from "mobx-react-lite";
 import { View, YStack } from "tamagui";
-import { translate } from "../../../components/translate";
-import { useColorScheme } from "react-native";
-import { AuthStore } from "../../../components/auth/auth.store";
+
 import { AuthProvider } from "../../../components/auth/auth.provider";
+import { AuthStore } from "../../../components/auth/auth.store";
+import { translate } from "../../../components/translate";
 
 const AuthorisedLayout = observer(() => {
   return (
@@ -63,24 +64,11 @@ const DefaultToast = () => {
       animation={"quick"}
       bg="$backgroundTransparent"
     >
-      <View
-        overflow="hidden"
-        borderRadius={"$4"}
-        borderColor={"$gray5"}
-        borderWidth="$0.5"
-      >
-        <BlurView
-          intensity={80}
-          tint={colorScheme ?? "default"}
-          style={{ padding: 8 }}
-        >
+      <View overflow="hidden" borderRadius={"$4"} borderColor={"$gray5"} borderWidth="$0.5">
+        <BlurView intensity={80} tint={colorScheme ?? "default"} style={{ padding: 8 }}>
           <YStack>
             <Toast.Title textAlign="center">{currentToast.title}</Toast.Title>
-            {!!currentToast.message && (
-              <Toast.Description textAlign="center">
-                {currentToast.message}
-              </Toast.Description>
-            )}
+            {!!currentToast.message && <Toast.Description textAlign="center">{currentToast.message}</Toast.Description>}
           </YStack>
         </BlurView>
       </View>

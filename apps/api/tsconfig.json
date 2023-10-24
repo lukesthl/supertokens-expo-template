@@ -1,4 +1,5 @@
 {
+  "extends": ["@acme/tsconfig/base"],
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
@@ -8,11 +9,12 @@
     "allowSyntheticDefaultImports": true,
     "target": "ES2021",
     "sourceMap": true,
+    "noEmit": false,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,

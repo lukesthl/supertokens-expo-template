@@ -1,19 +1,20 @@
-import { Inject, Injectable } from '@nestjs/common';
-import supertokens from 'supertokens-node';
-import Dashboard from 'supertokens-node/recipe/dashboard';
-import EmailVerification from 'supertokens-node/recipe/emailverification';
-import Session from 'supertokens-node/recipe/session';
-import ThirdPartyEmailPassword from 'supertokens-node/recipe/thirdpartyemailpassword';
-import UserMetadata from 'supertokens-node/recipe/usermetadata';
-import { AuthModuleConfig, ConfigInjectionToken } from '../config.interface';
-import { EmailService } from '../../email/email.service';
-import UserRoles from 'supertokens-node/recipe/userroles';
+import { Inject, Injectable } from "@nestjs/common";
+import supertokens from "supertokens-node";
+import Dashboard from "supertokens-node/recipe/dashboard";
+import EmailVerification from "supertokens-node/recipe/emailverification";
+import Session from "supertokens-node/recipe/session";
+import ThirdPartyEmailPassword from "supertokens-node/recipe/thirdpartyemailpassword";
+import UserMetadata from "supertokens-node/recipe/usermetadata";
+import UserRoles from "supertokens-node/recipe/userroles";
+
+import { EmailService } from "../../email/email.service";
+import { AuthModuleConfig, ConfigInjectionToken } from "../config.interface";
 
 @Injectable()
 export class SupertokensService {
   constructor(
     @Inject(ConfigInjectionToken) private config: AuthModuleConfig,
-    private emailService: EmailService,
+    private emailService: EmailService
   ) {
     supertokens.init({
       appInfo: config.appInfo,
@@ -26,10 +27,10 @@ export class SupertokensService {
           signUpFeature: {
             formFields: [
               {
-                id: 'first_name',
+                id: "first_name",
               },
               {
-                id: 'last_name',
+                id: "last_name",
               },
             ],
           },
@@ -51,17 +52,11 @@ export class SupertokensService {
               return {
                 ...originalImplementation,
                 thirdPartySignInUpPOST: async function (input) {
-                  if (
-                    originalImplementation.thirdPartySignInUpPOST === undefined
-                  ) {
-                    throw Error('Should never come here');
+                  if (originalImplementation.thirdPartySignInUpPOST === undefined) {
+                    throw Error("Should never come here");
                   }
-                  const response =
-                    await originalImplementation.thirdPartySignInUpPOST(input);
-                  if (
-                    response.status === 'OK' &&
-                    response.createdNewRecipeUser
-                  ) {
+                  const response = await originalImplementation.thirdPartySignInUpPOST(input);
+                  if (response.status === "OK" && response.createdNewRecipeUser) {
                     let updatedUser:
                       | {
                           first_name?: string;
@@ -70,97 +65,75 @@ export class SupertokensService {
                         }
                       | undefined = undefined;
                     const [thirdParty] = response.user.thirdParty;
-                    if (thirdParty.id === 'apple') {
-                      const user = response.rawUserInfoFromProvider
-                        .fromIdTokenPayload.user as {
-                        email: string;
-                        first_name: string;
-                        last_name: string;
-                      };
-                      updatedUser = {
-                        first_name: user.first_name,
-                        last_name: user.last_name,
-                      };
-                    } else if (thirdParty.id === 'github') {
-                      const rawUser = response.rawUserInfoFromProvider
-                        .fromUserInfoAPI as {
-                        user: {
-                          name: string;
-                          avatar_url?: string;
+                    if (thirdParty) {
+                      if (thirdParty.id === "apple") {
+                        const user = response.rawUserInfoFromProvider.fromIdTokenPayload?.user as {
+                          email: string;
+                          first_name: string;
+                          last_name: string;
                         };
-                      };
-                      updatedUser = {
-                        first_name: rawUser.user.name,
-                        avatarUrl: typeof rawUser.user.avatar_url
-                          ? rawUser.user?.avatar_url
-                          : undefined,
-                        last_name: '',
-                      };
-                    } else if (thirdParty.id === 'google') {
-                      const user = response.rawUserInfoFromProvider
-                        .fromIdTokenPayload as {
-                        email: string;
-                        given_name: string;
-                        family_name: string;
-                        picture: string;
-                      };
-                      updatedUser = {
-                        first_name: user.given_name,
-                        last_name: user.family_name,
-                        avatarUrl: user.picture,
-                      };
+                        updatedUser = {
+                          first_name: user.first_name,
+                          last_name: user.last_name,
+                        };
+                      } else if (thirdParty.id === "github") {
+                        const rawUser = response.rawUserInfoFromProvider.fromUserInfoAPI as {
+                          user: {
+                            name: string;
+                            avatar_url?: string;
+                          };
+                        };
+                        updatedUser = {
+                          first_name: rawUser.user.name,
+                          avatarUrl: rawUser.user?.avatar_url ?? undefined,
+                          last_name: "",
+                        };
+                      } else if (thirdParty.id === "google") {
+                        const user = response.rawUserInfoFromProvider.fromIdTokenPayload as {
+                          email: string;
+                          given_name: string;
+                          family_name: string;
+                          picture: string;
+                        };
+                        updatedUser = {
+                          first_name: user.given_name,
+                          last_name: user.family_name,
+                          avatarUrl: user.picture,
+                        };
+                      }
                     }
-                    await Promise.all([
-                      UserMetadata.updateUserMetadata(
-                        response.user.id,
-                        updatedUser,
-                      ),
-                      UserRoles.createNewRoleOrAddPermissions('user', [
-                        'read',
-                        'write',
-                      ]),
-                    ]);
-                    await UserRoles.addRoleToUser(
-                      input.tenantId,
-                      response.user.id,
-                      'user',
-                    );
+                    const updatePromises: Promise<unknown>[] = [
+                      UserRoles.createNewRoleOrAddPermissions("user", ["read", "write"]),
+                    ];
+                    if (updatedUser) {
+                      updatePromises.push(UserMetadata.updateUserMetadata(response.user.id, updatedUser));
+                    }
+                    await Promise.all(updatePromises);
+                    await UserRoles.addRoleToUser(input.tenantId, response.user.id, "user");
                   }
                   return response;
                 },
                 emailPasswordSignUpPOST: async function (input) {
-                  if (
-                    originalImplementation.emailPasswordSignUpPOST === undefined
-                  ) {
-                    throw Error('Should never come here');
+                  if (originalImplementation.emailPasswordSignUpPOST === undefined) {
+                    throw Error("Should never come here");
                   }
 
-                  const response =
-                    await originalImplementation.emailPasswordSignUpPOST(input);
-                  if (response.status === 'OK') {
+                  const response = await originalImplementation.emailPasswordSignUpPOST(input);
+                  if (response.status === "OK") {
                     const formFields = input.formFields;
                     await UserMetadata.updateUserMetadata(response.user.id, {
-                      first_name: formFields.find((f) => f.id === 'first_name')
-                        .value,
-                      last_name: formFields.find((f) => f.id === 'last_name')
-                        .value,
+                      first_name: formFields.find((f) => f.id === "first_name")?.value,
+                      last_name: formFields.find((f) => f.id === "last_name")?.value,
                     });
                     await EmailVerification.sendEmailVerificationEmail(
                       input.tenantId,
                       response.user.id,
                       response.session.getRecipeUserId(),
                       response.user.emails[0],
-                      input.userContext,
+                      input.userContext
                     );
-                    await UserRoles.createNewRoleOrAddPermissions('user', [
-                      'read',
-                      'write',
-                    ]);
-                    await UserRoles.addRoleToUser(
-                      input.tenantId,
-                      response.user.id,
-                      'user',
-                    );
+                    await UserRoles.createNewRoleOrAddPermissions("user", ["read", "write"]);
+                    await UserRoles.addRoleToUser(input.tenantId, response.user.id, "user");
                   }
 
                   return response;
@@ -171,11 +144,11 @@ export class SupertokensService {
           providers: [
             {
               config: {
-                thirdPartyId: 'apple',
+                thirdPartyId: "apple",
                 clients: [
                   {
-                    clientId: process.env.APPLE_CLIENT_ID,
-                    clientType: 'service',
+                    clientId: process.env.APPLE_CLIENT_ID ?? "",
+                    clientType: "service",
                     additionalConfig: {
                       keyId: process.env.APPLE_KEY_ID,
                       privateKey: process.env.APPLE_PRIVATE_KEY,
@@ -187,11 +160,11 @@ export class SupertokensService {
             },
             {
               config: {
-                thirdPartyId: 'github',
+                thirdPartyId: "github",
                 clients: [
                   {
-                    clientType: 'ios',
-                    clientId: process.env.GITHUB_CLIENT_ID,
+                    clientType: "ios",
+                    clientId: process.env.GITHUB_CLIENT_ID ?? "",
                     clientSecret: process.env.GITHUB_CLIENT_SECRET,
                   },
                 ],
@@ -199,12 +172,12 @@ export class SupertokensService {
             },
             {
               config: {
-                thirdPartyId: 'google',
+                thirdPartyId: "google",
                 clients: [
                   {
-                    clientId: process.env.GOOGLE_CLIENT_ID,
+                    clientId: process.env.GOOGLE_CLIENT_ID ?? "",
                     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                    clientType: 'ios',
+                    clientType: "ios",
                   },
                 ],
               },
@@ -213,7 +186,7 @@ export class SupertokensService {
         }),
         UserRoles.init(),
         EmailVerification.init({
-          mode: 'REQUIRED',
+          mode: "REQUIRED",
           emailDelivery: {
             override: (originalImplementation) => {
               return {

@@ -1,8 +1,9 @@
 import { makeRedirectUri } from "expo-auth-session";
 import SuperTokens from "supertokens-react-native";
+
 import { appConfig } from "../../constants/app.config";
 import { Rest } from "../clients/rest.client";
-import { FormFieldId, IFormField } from "./form/interfaces";
+import type { FormFieldId, IFormField } from "./form/interfaces";
 
 export class AuthService {
   public async getUser() {
@@ -18,7 +19,7 @@ export class AuthService {
         avatarUrl?: string;
       };
       roles: string[];
-      session: { userId: string; thirdParty?: { id: string; userId: string } };
+      session: { userId: string; thirdParty: { id: string; userId: string }[] };
     }>("/auth/session");
   }
 
@@ -150,26 +151,29 @@ export class AuthService {
     return SuperTokens.signOut();
   }
 
-  public async changePassword({
-    oldPassword,
-    newPassword,
-  }: {
-    oldPassword: string;
-    newPassword: string;
-  }) {
-    return Rest.client.post(`/auth/change-password`, {
+  public async changePassword({ oldPassword, newPassword }: { oldPassword: string; newPassword: string }) {
+    return Rest.client.post<{
+      status: "OK" | "GENERAL_ERROR";
+      formFields?: { error: string; id: FormFieldId }[];
+    }>(`/auth/change-password`, {
       oldPassword,
       newPassword,
     });
   }
 
   public async changeEmail({ email }: { email: string }) {
-    return Rest.client.post(`/auth/change-email`, {
+    return Rest.client.post<{
+      status: "OK" | "GENERAL_ERROR";
+      formFields?: { error: string; id: FormFieldId }[];
+    }>(`/auth/change-email`, {
       email,
     });
   }
 
   public async deleteAccount() {
-    return Rest.client.post(`/auth/delete-account`);
+    return Rest.client.post<{
+      status: "OK" | "GENERAL_ERROR";
+      formFields?: { error: string; id: FormFieldId }[];
+    }>(`/auth/delete-account`);
   }
 }

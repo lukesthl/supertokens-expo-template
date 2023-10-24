@@ -1,16 +1,15 @@
+import { router } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { LmButton } from "@tamagui-extras/core";
 import { LmInput } from "@tamagui-extras/form";
-import { StatusBar } from "expo-status-bar";
-import { values } from "mobx";
-import { Heading, Text, View, YStack } from "tamagui";
-import { translate } from "../../../../../components/translate";
-import { DismissKeyboard } from "../../../../../components/keyboard";
-import { AuthError } from "expo-auth-session";
-import { router } from "expo-router";
-import { Formik } from "formik";
-import { AuthStore } from "../../../../../components/auth/auth.store";
-import { useToastController } from "@tamagui/toast";
 import { AlertTriangle } from "@tamagui/lucide-icons";
+import { useToastController } from "@tamagui/toast";
+import { Formik } from "formik";
+import { Heading, Text, View, YStack } from "tamagui";
+
+import { AuthStore } from "../../../../../components/auth/auth.store";
+import { DismissKeyboard } from "../../../../../components/keyboard";
+import { translate } from "../../../../../components/translate";
 
 export default function DeleteAccountModal() {
   const toast = useToastController();
@@ -24,13 +23,9 @@ export default function DeleteAccountModal() {
           validate={(values) => {
             const errors: Record<string, string> = {};
             if (!values.email) {
-              errors.email = translate.t(
-                "account.deleteaccount.errors.email.required"
-              );
+              errors.email = translate.t("account.deleteaccount.errors.email.required");
             } else if (values.email !== AuthStore.user.email) {
-              errors.email = translate.t(
-                "account.deleteaccount.errors.email.notmatch"
-              );
+              errors.email = translate.t("account.deleteaccount.errors.email.notmatch");
             }
             return errors;
           }}
@@ -50,21 +45,14 @@ export default function DeleteAccountModal() {
             setSubmitting(false);
           }}
         >
-          {({
-            values,
-            errors,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting,
-          }) => (
-            <View mt="$8" space="$3.5" mx="$4">
+          {({ values, errors, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+            <View marginTop="$8" space="$3.5" marginHorizontal="$4">
               <View>
                 <Heading>{translate.t("account.deleteaccount.title")}</Heading>
-                <Text mt="$1" color="$gray10">
+                <Text marginTop="$1" color="$gray10">
                   {translate.t("account.deleteaccount.description")}
                 </Text>
-                <Text fontWeight={"bold"} mt="$2">
+                <Text fontWeight={"bold"} marginTop="$2">
                   E-Mail: {AuthStore.user.email}
                 </Text>
               </View>
@@ -85,11 +73,11 @@ export default function DeleteAccountModal() {
                   onPress={() => handleSubmit()}
                   loading={isSubmitting}
                   icon={<AlertTriangle />}
-                  bg="$red10"
+                  backgroundColor="$red10"
                 >
                   {translate.t("account.deleteaccount.submit")}
                 </LmButton>
-                <LmButton onPress={() => router.back()} mt="$2">
+                <LmButton onPress={() => router.back()} marginTop="$2">
                   {translate.t("account.deleteaccount.cancel")}
                 </LmButton>
               </View>

@@ -10,7 +10,8 @@
     "test": "jest --watchAll",
     "export": "expo export --platform web",
     "dev:client": "npx expo start -c --dev-client",
-    "lint": "echo \"No linting configured\""
+    "lint": "eslint . --fix",
+    "format": "prettier --write \"**/*.{js,cjs,mjs,ts,tsx,md,json}\""
   },
   "jest": {
     "preset": "jest-expo"
@@ -73,6 +74,9 @@
     "tamagui": "^1.75.1"
   },
   "devDependencies": {
+    "@acme/eslint-config": "^0.2.0",
+    "@acme/prettier-config": "^0.1.0",
+    "@acme/tsconfig": "^0.1.0",
     "@babel/core": "^7.23.2",
     "@types/react": "~18.2.31",
     "jest": "^29.7.0",
@@ -85,5 +89,13 @@
     "metro": "0.76.0",
     "metro-resolver": "0.76.0"
   },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@acme/eslint-config/base",
+      "@acme/eslint-config/react"
+    ]
+  },
+  "prettier": "@acme/prettier-config",
   "private": true
 }

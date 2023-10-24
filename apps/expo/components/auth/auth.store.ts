@@ -1,7 +1,8 @@
-import { isAxiosError } from "axios";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { router } from "expo-router";
+import { isAxiosError } from "axios";
 import { makeAutoObservable } from "mobx";
+
 import { AuthError } from "./auth.error";
 import { AuthService } from "./auth.service";
 
@@ -11,10 +12,10 @@ interface IUser {
   lastName: string;
   email: string;
   avatarUrl?: string;
-  thirdParty?: {
+  thirdParty: {
     id: string;
     userId: string;
-  };
+  }[];
   roles: string[];
 }
 
@@ -67,6 +68,7 @@ class AuthStoreSingleton {
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
   public get user(): IUser {
     if (!this._user) {
       throw new Error("no user");
@@ -143,12 +145,7 @@ class AuthStoreSingleton {
     await this.loadUser();
   }
 
-  public async signUp(formData: {
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-  }) {
+  public async signUp(formData: { email: string; password: string; firstName: string; lastName: string }) {
     const response = await this.authService.signUp([
       {
         id: "email",
@@ -177,9 +174,7 @@ class AuthStoreSingleton {
   }
 
   public async resetPassword({ email }: { email: string }) {
-    const response = await this.authService.resetPassword([
-      { id: "email", value: email },
-    ]);
+    const response = await this.authService.resetPassword([{ id: "email", value: email }]);
     if (response.data.status === "FIELD_ERROR") {
       throw new AuthError(response.data.status, response.data.formFields);
     }
@@ -189,19 +184,13 @@ class AuthStoreSingleton {
     await this.authService.verifyEmail();
   }
 
-  public async changePassword({
-    oldPassword,
-    newPassword,
-  }: {
-    oldPassword: string;
-    newPassword: string;
-  }) {
+  public async changePassword({ oldPassword, newPassword }: { oldPassword: string; newPassword: string }) {
     const response = await this.authService.changePassword({
       oldPassword,
       newPassword,
     });
     if (response.data.status !== "OK") {
-      throw new AuthError(response.data.status, response.data.formFields);
+      throw new AuthError(response.data.status, response.data?.formFields);
     }
   }
 
@@ -210,7 +199,7 @@ class AuthStoreSingleton {
       email,
     });
     if (response.data.status !== "OK") {
-      throw new AuthError(response.data.status, response.data.formFields);
+      throw new AuthError(response.data.status, response.data?.formFields);
     }
   }
 

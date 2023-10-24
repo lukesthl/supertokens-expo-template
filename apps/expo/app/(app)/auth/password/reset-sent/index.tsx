@@ -1,7 +1,8 @@
-import { MailCheck } from "@tamagui/lucide-icons";
-import { Stack, router } from "expo-router";
 import React from "react";
+import { router, Stack } from "expo-router";
+import { MailCheck } from "@tamagui/lucide-icons";
 import { Button, Heading, Text, View, XStack, YStack } from "tamagui";
+
 import { translate } from "../../../../../components/translate";
 
 export default function ResetMailSent() {
@@ -20,9 +21,7 @@ export default function ResetMailSent() {
             </View>
           </XStack>
           <YStack mt="$4" space="$2" justifyContent="center">
-            <Heading textAlign="center">
-              {translate.t("auth.resetPasswordSent.title")}
-            </Heading>
+            <Heading textAlign="center">{translate.t("auth.resetPasswordSent.title")}</Heading>
             <Text color="$gray11" textAlign="center">
               {translate.t("auth.resetPasswordSent.description")}
             </Text>

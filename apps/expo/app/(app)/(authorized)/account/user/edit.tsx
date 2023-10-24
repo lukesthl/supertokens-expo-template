@@ -1,18 +1,16 @@
+import React from "react";
+import * as ImagePicker from "expo-image-picker";
+import { router, Stack } from "expo-router";
 import { LmButton } from "@tamagui-extras/core";
 import { Upload, X } from "@tamagui/lucide-icons";
 import { useToastController } from "@tamagui/toast";
-import * as ImagePicker from "expo-image-picker";
-import { Stack, router } from "expo-router";
 import { Formik } from "formik";
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { Heading, Image, Input, Text, View, XStack, YStack } from "tamagui";
+
 import { AuthStore } from "../../../../../components/auth/auth.store";
+import { DismissKeyboard, useSoftKeyboardEffect } from "../../../../../components/keyboard";
 import { translate } from "../../../../../components/translate";
-import {
-  DismissKeyboard,
-  useSoftKeyboardEffect,
-} from "../../../../../components/keyboard";
 
 const EditUser = observer(() => {
   const toast = useToastController();
@@ -37,13 +35,9 @@ const EditUser = observer(() => {
           validate={(values) => {
             const errors: Record<string, string> = {};
             if (!values.firstName) {
-              errors.firstName = translate.t(
-                "account.edituser.errors.firstname.required"
-              );
+              errors.firstName = translate.t("account.edituser.errors.firstname.required");
             } else if (!values.lastName) {
-              errors.lastName = translate.t(
-                "account.edituser.errors.lastname.required"
-              );
+              errors.lastName = translate.t("account.edituser.errors.lastname.required");
             }
             return errors;
           }}
@@ -52,7 +46,7 @@ const EditUser = observer(() => {
               await AuthStore.updateUser({
                 firstName: values.firstName,
                 lastName: values.lastName,
-                avatarUrl: values.avatarUrl || "",
+                avatarUrl: values.avatarUrl ?? "",
               });
               await AuthStore.loadUser();
               toast.show(translate.t("account.edituser.success"), {
@@ -68,16 +62,8 @@ const EditUser = observer(() => {
             setSubmitting(false);
           }}
         >
-          {({
-            values,
-            errors,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            setFieldValue,
-            isSubmitting,
-          }) => (
-            <View mt="$8" space="$3.5" mx="$4">
+          {({ values, errors, handleChange, handleBlur, handleSubmit, setFieldValue, isSubmitting }) => (
+            <View marginTop="$8" space="$3.5" marginHorizontal="$4">
               <View>
                 <Text>{translate.t("account.edituser.subHeadline")}</Text>
                 <Heading>{translate.t("account.edituser.title")}</Heading>
@@ -87,9 +73,9 @@ const EditUser = observer(() => {
                   <Text>{translate.t("account.edituser.avatarurl")}</Text>
                   <View
                     borderRadius={"$3"}
-                    bg="$gray1"
-                    h="$10"
-                    w="50%"
+                    backgroundColor="$gray1"
+                    height="$10"
+                    width="50%"
                     position="relative"
                     onPress={async () => {
                       const result = await ImagePicker.launchImageLibraryAsync({
@@ -101,17 +87,14 @@ const EditUser = observer(() => {
                       });
 
                       if (!result.canceled) {
-                        setFieldValue(
-                          "avatarUrl",
-                          `data:image/jpeg;base64,${result.assets[0].base64}`
-                        );
+                        void setFieldValue("avatarUrl", `data:image/jpeg;base64,${result.assets[0]?.base64}`);
                       }
                     }}
-                    pressStyle={{ bg: "$gray3" }}
+                    pressStyle={{ backgroundColor: "$gray3" }}
                     borderColor="$gray10"
                     borderWidth="$0.5"
                     borderStyle="dashed"
-                    p="$1.5"
+                    padding="$1.5"
                   >
                     {values.avatarUrl ? (
                       <>
@@ -120,14 +103,14 @@ const EditUser = observer(() => {
                           overflow="hidden"
                           position="absolute"
                           right={"$-2.5"}
-                          bg={"$gray5"}
+                          backgroundColor={"$gray5"}
                           top={"$-2.5"}
                           zIndex={2}
-                          p="$1.5"
+                          padding="$1.5"
                           onPress={() => {
-                            setFieldValue("avatarUrl", "");
+                            void setFieldValue("avatarUrl", "");
                           }}
-                          pressStyle={{ bg: "$gray3" }}
+                          pressStyle={{ backgroundColor: "$gray3" }}
                         >
                           <X size="$1" color="$gray12" />
                         </View>
@@ -144,19 +127,9 @@ const EditUser = observer(() => {
                         />
                       </>
                     ) : (
-                      <XStack
-                        h="100%"
-                        space="$3"
-                        justifyContent="center"
-                        alignItems="center"
-                        p="$3"
-                      >
+                      <XStack height="100%" space="$3" justifyContent="center" alignItems="center" padding="$3">
                         <Upload size="$1" color="$gray10" />
-                        <Text
-                          color="$gray12"
-                          fontSize={"$3"}
-                          textAlign="center"
-                        >
+                        <Text color="$gray12" fontSize={"$3"} textAlign="center">
                           {translate.t("account.edituser.uploadavatarurl")}
                         </Text>
                       </XStack>
@@ -186,10 +159,8 @@ const EditUser = observer(() => {
                   />
                 </XStack>
               </YStack>
-              {(errors.firstName || errors.lastName) && (
-                <Text color="$red10">
-                  {errors.firstName || errors.lastName}
-                </Text>
+              {(errors.firstName ?? errors.lastName) && (
+                <Text color="$red10">{errors.firstName ?? errors.lastName}</Text>
               )}
               <View>
                 <LmButton onPress={() => handleSubmit()} loading={isSubmitting}>

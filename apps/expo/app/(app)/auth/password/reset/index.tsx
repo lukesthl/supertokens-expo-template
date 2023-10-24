@@ -1,16 +1,12 @@
-import React, { useState } from "react";
-import { Button, Heading, Input, Text, View, XStack, YStack } from "tamagui";
-import { AuthStore } from "../../../../../components/auth/auth.store";
-import { translate } from "../../../../../components/translate";
-import { Stack, router } from "expo-router";
-import { Formik } from "formik";
-import { AuthError } from "../../../../../components/auth/auth.error";
+import { router, Stack } from "expo-router";
 import { LmButton } from "@tamagui-extras/core";
-import {
-  DismissKeyboard,
-  useSoftKeyboardEffect,
-} from "../../../../../components/keyboard";
-import { KeyboardAvoidingView } from "react-native";
+import { Formik } from "formik";
+import { Button, Heading, Input, Text, View, YStack } from "tamagui";
+
+import { AuthError } from "../../../../../components/auth/auth.error";
+import { AuthStore } from "../../../../../components/auth/auth.store";
+import { DismissKeyboard, useSoftKeyboardEffect } from "../../../../../components/keyboard";
+import { translate } from "../../../../../components/translate";
 
 export default function ResetPassword() {
   useSoftKeyboardEffect();
@@ -36,6 +32,7 @@ export default function ResetPassword() {
                   const errors = error.formFields.map((field) => ({
                     [field.id]: field.error,
                   }));
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                   setErrors(Object.assign({}, ...errors));
                 } else {
                   setErrors({ email: error.message });
@@ -46,15 +43,8 @@ export default function ResetPassword() {
             setSubmitting(false);
           }}
         >
-          {({
-            values,
-            errors,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting,
-          }) => (
-            <View mt="$8" mx="$4" h="100%">
+          {({ values, errors, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+            <View marginTop="$8" marginHorizontal="$4" height="100%">
               <YStack space="$3.5">
                 <View>
                   <Text>{translate.t("auth.resetPassword.subHeadline")}</Text>
@@ -70,19 +60,16 @@ export default function ResetPassword() {
                 />
                 {errors.email && <Text color="$red10">{errors.email}</Text>}
                 <View>
-                  <LmButton
-                    onPress={() => handleSubmit()}
-                    loading={isSubmitting}
-                  >
+                  <LmButton onPress={() => handleSubmit()} loading={isSubmitting}>
                     {translate.t("auth.resetPassword.sendEmail")}
                   </LmButton>
                   <Button
                     onPress={() => router.back()}
                     color="$gray10"
-                    mb="$1"
-                    bg="transparent"
+                    marginBottom="$1"
+                    backgroundColor="transparent"
                     pressStyle={{
-                      bg: "transparent",
+                      backgroundColor: "transparent",
                       borderWidth: 0,
                     }}
                   >

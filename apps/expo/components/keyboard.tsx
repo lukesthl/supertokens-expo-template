@@ -1,9 +1,9 @@
-import { useFocusEffect } from "@react-navigation/native";
-import Constants from "expo-constants";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import Constants, { AppOwnership } from "expo-constants";
+import { useFocusEffect } from "@react-navigation/native";
 import { View } from "tamagui";
 
-const isRunningInExpoGo = Constants.appOwnership === "expo";
+const isRunningInExpoGo = Constants.appOwnership === AppOwnership.Expo;
 
 /**
  *  This hook should be used in every screen that has a form input field to avoid the keyboard
@@ -12,8 +12,11 @@ const isRunningInExpoGo = Constants.appOwnership === "expo";
 
 export const useSoftKeyboardEffect = () => {
   if (isRunningInExpoGo) return;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useFocusEffect(() => {
-    const reactNativeAvoidSoftinput = require("react-native-avoid-softinput");
+    const reactNativeAvoidSoftinput =
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require("react-native-avoid-softinput") as typeof import("react-native-avoid-softinput");
     const { AvoidSoftInput } = reactNativeAvoidSoftinput;
     AvoidSoftInput.setShouldMimicIOSBehavior(true);
     AvoidSoftInput.setEnabled(true);

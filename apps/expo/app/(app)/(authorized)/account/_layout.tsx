@@ -1,5 +1,6 @@
 import { Stack } from "expo-router";
 import { observer } from "mobx-react-lite";
+
 import { translate } from "../../../../components/translate";
 
 export const unstable_settings = {
